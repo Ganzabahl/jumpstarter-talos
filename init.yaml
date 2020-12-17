@@ -1,0 +1,234 @@
+version: v1alpha1 # Indicates the schema used to decode the contents.
+debug: false # Enable verbose logging to the console.
+persist: true # Indicates whether to pull the machine config upon every boot.
+# Provides machine specific configuration options.
+machine:
+    type: init # Defines the role of the machine within the cluster.
+    token: 7xbibq.hy9z7rlv46d4tc2h # The `token` is used by a machine to join the PKI of the cluster.
+    # The root certificate authority of the PKI.
+    ca:
+        crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJQakNCOGFBREFnRUNBaEJhR1dySUo1bElDckM3S0w3WFRXVHZNQVVHQXl0bGNEQVFNUTR3REFZRFZRUUsKRXdWMFlXeHZjekFlRncweU1ERXlNVGN4TWpJd05UaGFGdzB6TURFeU1UVXhNakl3TlRoYU1CQXhEakFNQmdOVgpCQW9UQlhSaGJHOXpNQ293QlFZREsyVndBeUVBc3JtS1ZNdkc5U1lPYURiQTJUYjR2WDk2UUVkcVk2a2toUmNQCjY0ZXo0RHlqWVRCZk1BNEdBMVVkRHdFQi93UUVBd0lDaERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUkKS3dZQkJRVUhBd0l3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVSzNIZjhVRnA3NVYzUkZ0TAo3ZmhhWU9NbTdtb3dCUVlESzJWd0EwRUFMVktMVlY3ZWVucXdlQUhkRjFNRG02UEtRN2lXczArV3RLMzdiTWRtCjhsWjIwdytHaW9iMGRoeTg1RzcrZFFxU1hCUFJtNllycEdlK004T0NyUTg0Q3c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+        key: LS0tLS1CRUdJTiBFRDI1NTE5IFBSSVZBVEUgS0VZLS0tLS0KTUM0Q0FRQXdCUVlESzJWd0JDSUVJRGtuSWIxQUlKSmFMOWxKcVp1N2JUSytteE9HekFLWXpvR0ZuQmdZT0g2SwotLS0tLUVORCBFRDI1NTE5IFBSSVZBVEUgS0VZLS0tLS0K
+    # Used to provide additional options to the kubelet.
+    kubelet:
+        image: ghcr.io/talos-systems/kubelet:v1.19.4 # The `image` field is an optional reference to an alternative kubelet image.
+        
+        # # The `extraArgs` field is used to provide additional flags to the kubelet.
+        # extraArgs:
+        #     key: value
+
+        # # The `extraMounts` field is used to add additional mounts to the kubelet container.
+        # extraMounts:
+        #     - destination: /var/lib/example
+        #       type: bind
+        #       source: /var/lib/example
+        #       options:
+        #         - rshared
+        #         - rw
+    # Provides machine specific network configuration options.
+    network: {}
+    # # `interfaces` is used to define the network interface configuration.
+    # interfaces:
+    #     - interface: eth0 # The interface name.
+    #       cidr: 192.168.2.0/24 # Assigns a static IP address to the interface.
+    #       # A list of routes associated with the interface.
+    #       routes:
+    #         - network: 0.0.0.0/0 # The route's network.
+    #           gateway: 192.168.2.1 # The route's gateway.
+    #       mtu: 1500 # The interface's MTU.
+    #       
+    #       # # Bond specific options.
+    #       # bond:
+    #       #     # The interfaces that make up the bond.
+    #       #     interfaces:
+    #       #         - eth0
+    #       #         - eth1
+    #       #     mode: 802.3ad # A bond option.
+    #       #     lacpRate: fast # A bond option.
+
+    #       # # Indicates if DHCP should be used to configure the interface.
+    #       # dhcp: true
+
+    #       # # DHCP specific options.
+    #       # dhcpOptions:
+    #       #     routeMetric: 1024 # The priority of all routes received via DHCP.
+
+    # # Used to statically set the nameservers for the machine.
+    # nameservers:
+    #     - 8.8.8.8
+    #     - 1.1.1.1
+
+    # # Allows for extra entries to be added to the `/etc/hosts` file
+    # extraHostEntries:
+    #     - ip: 192.168.1.100 # The IP of the host.
+    #       # The host alias.
+    #       aliases:
+    #         - example
+    #         - example.domain.tld
+
+    # Used to provide instructions for installations.
+    install:
+        disk: /dev/sda # The disk used for installations.
+        image: ghcr.io/talos-systems/installer:v0.7.1 # Allows for supplying the image used to perform the installation.
+        bootloader: true # Indicates if a bootloader should be installed.
+        wipe: false # Indicates if the installation disk should be wiped at installation time.
+        
+        # # Allows for supplying extra kernel args via the bootloader.
+        # extraKernelArgs:
+        #     - a=b
+    
+    # # Extra certificate subject alternative names for the machine's certificate.
+
+    # # Uncomment this to enable SANs.
+    # certSANs:
+    #     - 10.0.0.10
+    #     - 172.16.0.10
+    #     - 192.168.0.10
+
+    # # Used to partition, format and mount additional disks.
+
+    # # MachineDisks list example.
+    # disks:
+    #     - device: /dev/sdb # The name of the disk to use.
+    #       # A list of partitions to create on the disk.
+    #       partitions:
+    #         - mountpoint: /var/mnt/extra # Where to mount the partition.
+    #           
+    #           # # This size of partition: either bytes or human readable representation.
+
+    #           # # Human readable representation.
+    #           # size: 100 MB
+    #           # # Precise value in bytes.
+    #           # size: 1073741824
+
+    # # Allows the addition of user specified files.
+
+    # # MachineFiles usage example.
+    # files:
+    #     - content: '...' # The contents of the file.
+    #       permissions: 0o666 # The file's permissions in octal.
+    #       path: /tmp/file.txt # The path of the file.
+    #       op: append # The operation to use
+
+    # # The `env` field allows for the addition of environment variables.
+
+    # # Environment variables definition examples.
+    # env:
+    #     GRPC_GO_LOG_SEVERITY_LEVEL: info
+    #     GRPC_GO_LOG_VERBOSITY_LEVEL: "99"
+    #     https_proxy: http://SERVER:PORT/
+    # env:
+    #     GRPC_GO_LOG_SEVERITY_LEVEL: error
+    #     https_proxy: https://USERNAME:PASSWORD@SERVER:PORT/
+    # env:
+    #     https_proxy: http://DOMAIN\USERNAME:PASSWORD@SERVER:PORT/
+
+    # # Used to configure the machine's time settings.
+
+    # # Example configuration for cloudflare ntp server.
+    # time:
+    #     disabled: false # Indicates if the time service is disabled for the machine.
+    #     # Specifies time (NTP) servers to use for setting the system time.
+    #     servers:
+    #         - time.cloudflare.com
+
+    # # Used to configure the machine's sysctls.
+
+    # # MachineSysctls usage example.
+    # sysctls:
+    #     kernel.domainname: talos.dev
+    #     net.ipv4.ip_forward: "0"
+
+    # # Used to configure the machine's container image registry mirrors.
+    # registries:
+    #     # Specifies mirror configuration for each registry.
+    #     mirrors:
+    #         ghcr.io:
+    #             # List of endpoints (URLs) for registry mirrors to use.
+    #             endpoints:
+    #                 - https://registry.insecure
+    #                 - https://ghcr.io/v2/
+    #     # Specifies TLS & auth configuration for HTTPS image registries.
+    #     config:
+    #         registry.insecure:
+    #             # The TLS configuration for the registry.
+    #             tls:
+    #                 insecureSkipVerify: true # Skip TLS server certificate verification (not recommended).
+    #                 
+    #                 # # Enable mutual TLS authentication with the registry.
+    #                 # clientIdentity:
+    #                 #     crt: TFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVSklla05DTUhGLi4u
+    #                 #     key: TFMwdExTMUNSVWRKVGlCRlJESTFOVEU1SUZCU1NWWkJWRVVnUzBWWkxTMHRMUzBLVFVNLi4u
+    #             
+    #             # # The auth configuration for this registry.
+    #             # auth:
+    #             #     username: username # Optional registry authentication.
+    #             #     password: password # Optional registry authentication.
+# Provides cluster specific configuration options.
+cluster:
+    # Provides control plane specific configuration options.
+    controlPlane:
+        endpoint: https://test.net # Endpoint is the canonical controlplane endpoint, which can be an IP address or a DNS hostname.
+    clusterName: talos-k8s-metal-tutorial # Configures the cluster's name.
+    # Provides cluster specific network configuration options.
+    network:
+        dnsDomain: cluster.local # The domain used by Kubernetes DNS.
+        # The pod subnet CIDR.
+        podSubnets:
+            - 10.244.0.0/16
+        # The service subnet CIDR.
+        serviceSubnets:
+            - 10.96.0.0/12
+        
+        # # The CNI used.
+        # cni:
+        #     name: custom # Name of CNI to use.
+        #     # URLs containing manifests to apply for the CNI.
+        #     urls:
+        #         - https://raw.githubusercontent.com/cilium/cilium/v1.8/install/kubernetes/quick-install.yaml
+    token: x141eb.65mweb7v8ril8yek # The [bootstrap token](https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/) used to join the cluster.
+    aescbcEncryptionSecret: JjaPJdsoDiTqRZ34BbT6REwWJCuuyWfj6po+0Y4DWlY= # The key used for the [encryption of secret data at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
+    # The base64 encoded root certificate authority used by Kubernetes.
+    ca:
+        crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZGakNDQXY2Z0F3SUJBZ0lSQVBHN1UwZytXVmNWcWdkVDV1enFMQmt3RFFZSktvWklodmNOQVFFTkJRQXcKRlRFVE1CRUdBMVVFQ2hNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TURFeU1UY3hNakl3TlRaYUZ3MHpNREV5TVRVeApNakl3TlRaYU1CVXhFekFSQmdOVkJBb1RDbXQxWW1WeWJtVjBaWE13Z2dJaU1BMEdDU3FHU0liM0RRRUJBUVVBCkE0SUNEd0F3Z2dJS0FvSUNBUUNrZm45T3pVQkZEdmhLQTBTdWlkeHFOUmJrdmtBekxLZ1EvazVTZ2tDYUhOVkEKUTdtUC90a2kzcGJDRmk0QUtEQWZGQTNkUkdUWXZ1OU5CaGJ3OVRJemNZenlBSkNpNFlMSzQxcE5KN3FXRVltaQpsVEZNTWdFUUNyWWJ6enBlTFpSV0xzMjRkSlZWeDQ3WlQvK3RRU3FXeU4ybko0YkxQeER4WDBmN0VyTHRTQVhiCmZ2Yld1VjVFN3lpOHI4WVhEWnhuc1pYZnNONFAyQkxmeloyNFpra0tYR296SDJXRXRxZ2diQytocGxGTEpqQlYKdm9oK2dTT05XUUJLQWFzdGNnSXhWTFljUE05QnJZRmwramhoaEovN2dPZmVqWlpLMWV2TmJwK0crUHY2NzdpSwpPYjhrZWI3YXhLZ1JEaHczekZ5Skc1NmNBMnkvaWp0U1lVZm9ib1FodFVadkVLZU4zWS91NXZOcFdNRmdza0UxCjFLSWI1MWRPNGtaa0F6QnRRRjM2VjJXQnFZYmRScVQzSzkyVVhWb2R3R1QyRVdwQlQ2NWpWVWxFSi9USHlVWWkKZktsSTE5T0lHajJFbVpkVjVXTm1XQ1pvbW1keERRWkUzL0lqRk16YmU1R0RDSTJpazRDZGVXV2o3RGlsbUVxOApDcWgzdGg1L0hzNmNtb0t4QUM3Zm5ZaEJGaHdaQ3Uvay9KNFdWbU5ONmtuVkY0ZHRadjIwTkNqcGpVUjBHd3VmCkp5Mm44UWxLRDZCTjNBTUxqMFN2RkYzamRBYjYrRnAvdWNFWCtJQlo5b0pQOHpET0JRdW5nRGltRlB3WGpYbUkKQ1BOc3U5TGpOWkpDQW1EVmFMczVlVnQ1cXUvUEpIbXhlUmZWcXppVnd1amhYVlk5NTAwWDJzbjB5OVV6UndJRApBUUFCbzJFd1h6QU9CZ05WSFE4QkFmOEVCQU1DQW9Rd0hRWURWUjBsQkJZd0ZBWUlLd1lCQlFVSEF3RUdDQ3NHCkFRVUZCd01DTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRlBqWngzM0pFSlN2RTNOeWFYSlAKdjFLTjMwQlhNQTBHQ1NxR1NJYjNEUUVCRFFVQUE0SUNBUUJTdldRZm5sNVByNU1ZNExxY1oxVThyL0ExQ3Z2SgpPcGtNQmprRlQwMVQ2YVFYVUR6b3AveEpHOW1BTStsdUMzdy9PbVR6UDJBL0hDNTV4czNOWkJUMkcwRmo2aVIxClJuS2RMN2lTbFg4TjVoWlRuZ0JZVTBHQ2UxdEdUL29rK2xXQzBVd3NkYUkwc3UwUDRQTENQM2hjaG1QOFNaNjEKMGliZ3ZTOHdDckt0ZmFXRWVaMkQ2d2VucThGQXd5ZWFHeUNEL0orNEhLcUJoMjd0cGVacDlxbFYwMlg0L1prdwpGbEkzblVMN2VNeTBnZlZDZmdhdm92cFdTUWllSTlVMi9CZGFDSmJaYzJKaEh0c3ZiaTBtaUFWakZzRDNaUlJzCjhVcXFzaHdlMlBqR1dSYmMyN0I3dDVtN29Fd3Vsa1FwMXV3Y1U1eU8xbjc3NnlzUlhnK1RsNU53YkxrUDdJUkcKcHpFYVpFelRrUDBpR3U1c0ZSaUgyWDFmOC9mR0oyM2pOeTVtSXZJYTJ3d0NYQnZ3TDYrT1ArUGJlTHlCTFNSNgpKVGhWR2NKVUttYnFEbEJBeFBHTnJheGVNYWd0akgzZ3d0dnVDUzRTZktrbWt5UFltRzBEM1NRM0Z6Y3luV3Z1CnUxcXdTTUkzdnVScko4dUtHMm05Mm5hazVXRVVXN2tRRXdCUzZCSzRhZTRRS0FmazJpSWFpVit5NW9ZNTMvdU4KOS93R0dtT0dBNC9VeExBbjhjTytkQjlpRkU3NkRqNENmZzlsd2VhK2hzMnNLRUVvMllaSnIxbmp3MmthcjJkawpjcVNnaUg3OU9ZVUtwc0xsRGpubHNSWFpESnIyS2ZjTEg0U3lNZUt2SFFMSE9XVlE0Z3ZyTnp2SXRyTTVZWWdOCnpTZ3NoM3BmMnNIYVB3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+        key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS1FJQkFBS0NBZ0VBcEg1L1RzMUFSUTc0U2dORXJvbmNhalVXNUw1QU15eW9FUDVPVW9KQW1oelZRRU81CmovN1pJdDZXd2hZdUFDZ3dIeFFOM1VSazJMN3ZUUVlXOFBVeU0zR004Z0NRb3VHQ3l1TmFUU2U2bGhHSm9wVXgKVERJQkVBcTJHODg2WGkyVVZpN051SFNWVmNlTzJVLy9yVUVxbHNqZHB5ZUd5ejhROFY5SCt4S3k3VWdGMjM3MgoxcmxlUk84b3ZLL0dGdzJjWjdHVjM3RGVEOWdTMzgyZHVHWkpDbHhxTXg5bGhMYW9JR3d2b2FaUlN5WXdWYjZJCmZvRWpqVmtBU2dHckxYSUNNVlMySER6UFFhMkJaZm80WVlTZis0RG4zbzJXU3RYcnpXNmZodmo3K3UrNGlqbS8KSkhtKzJzU29FUTRjTjh4Y2lSdWVuQU5zdjRvN1VtRkg2RzZFSWJWR2J4Q25qZDJQN3ViemFWakJZTEpCTmRTaQpHK2RYVHVKR1pBTXdiVUJkK2xkbGdhbUczVWFrOXl2ZGxGMWFIY0JrOWhGcVFVK3VZMVZKUkNmMHg4bEdJbnlwClNOZlRpQm85aEptWFZlVmpabGdtYUpwbmNRMEdSTi95SXhUTTIzdVJnd2lOb3BPQW5YbGxvK3c0cFpoS3ZBcW8KZDdZZWZ4N09uSnFDc1FBdTM1MklRUlljR1FydjVQeWVGbFpqVGVwSjFSZUhiV2I5dERRbzZZMUVkQnNMbnljdApwL0VKU2crZ1Rkd0RDNDlFcnhSZDQzUUcrdmhhZjduQkYvaUFXZmFDVC9Nd3pnVUxwNEE0cGhUOEY0MTVpQWp6CmJMdlM0eldTUWdKZzFXaTdPWGxiZWFydnp5UjVzWGtYMWFzNGxjTG80VjFXUGVkTkY5cko5TXZWTTBjQ0F3RUEKQVFLQ0FnQUNtdlpOT3piL1lRTlJ1TWVIdEN0SGkxdTNkOFB3aTQ2RjVtRTdNVkR3bi9CSXVrbmdHL3M0Y0NvWApITjdScGRGTlRMWURnU2ZQdndadlE5OXRKWlVMOTRweDhzeFhxQmE0TysyY056cmZVWnZLZFc1NGRIcEwxTCtaCnBTaVpnVU5PTWlPVC9sUzNMUmY0SFNwQmhqeTBjcTRBRGNJMnllTHN6OE9HR0grNC9tRUpYdk50NXpXMUJjeXgKWUY5VTBpUmVDQlFGblBtSGFyYXgwTUhrdjhuOFhnWllsUEM0cjJQdVQ0aFptUmJFaC9CUUMxcUNGbTJIdVpjbApsTzB2SlJVZnp1V3JnTk1QaVQzNWJZTWpHRVNvYVJ4RERCOExSR1FkdHRqVC9IR1JRZWE4V2JuTFRCcFh3TEdnCnc0Wnk0OHU3YURLVTZnRDQ3Nm1NM25tVEZ0MEUzU2RVd09XL05uZUI1djZ0QjdTcGFKWFdLVENMbEc5SFhPNzMKeWhDUGp0c2VnQ21Jdi94Mnhzdlp1cy9jVFBqa2lJRENoRXh4dzROSG9ia3FadHBjZ0tpYmdkQlFES0oyeW1xaApCVTIrcmxzaVVzODZpRERmV2s1U2dENTRvUXFCMXhWQ0hWbVRmV21USGp3bG12ZkZMczJ6VWtQZWtVM016bWtZCm54eE5NeUpsVTZ4RGRtUldTTXgvWnpNYzRTakZkVEpvVHFrVTEyT1BUSkpQY21ReE9VL1hzWHV0TFN6bEN5QjMKaUtxUHBiekFqa053alBYOHB0WTRWQXlScWkzb2hBd3hmWTFGR0pQR3hlb3NWWUtUblpsRDhnNGErUFIzVmJNRQpSOVRGRWJUdXdNdnRtMTNjVGRJZmdHaG1aYWtIeVh6b2R4RXNwOVl1KzR2Mi9uUmpNUUtDQVFFQTAwY3FtSmRwCjk5L29RYXp1YktIWFhnem5ZZWUyVjFjS3JtdUxOZXRpOEVFWGVhb1kzRUhOc0FWV3BlOGpXeUtEb3hjMDU0N1QKdGd0akdiazUraVhVREcwUVNaK0FqYjUzRTE2dS9DY2YrUGNhMVV6dEJtM2VLMGEyQktIanp2dUtwVjJWNWhkSwpSY3h0Smcwbm1KWlFoVGZBK1M2TVIwU0lpQnMvYU5seUZIeFR5UlFyM1MyYlFGdHpSa1lNWXAvT0VhbUx4RzhFCmNVY3pHeGx2cmxRbm9jdlp1bDIxM1I3L2tUSW56aHlPbjRTL2ViekhVU1RlR2U5V1lYWlVqSWdoVzFzYjdKZGMKUDZ5dFNGQnBKYk01TjlHck9jcnVxcHkyT2txRTBwL2cwR3RTTFk4enJSTXVBVDhna29XOGZLQWVBVHJVcGpkOQpkbWgyTFlWUnEzaGQ1UUtDQVFFQXgxQXZNOTdKbEI5cExFand0MnUzWXpBdEpac2h2cVlNNTgvUkpmZ3ZjM1hVCnZTc25VU20rWWk4STdod0tOTHB2MSszUHN6MFQxb3NLMWorYnIxaTZ3dnlMYjhEUWNPeEVtZ0VDQmxBbkdka2oKRS9vek5tY3didVpUaHJvVStSVXE5UUhQNGV3R3JDV0J3b0p6cXBubzZPMzBxaGVPYVZXK1RqZE5XOXArc0pzLwoyZnIwZ1gxZWI2QzV6V1pTNHhROXdmZzFWTG5UNFdQMTk1Mkhna3VsWWMyVXdrMFI3ZXE2ODNQbm4rRjZaWW9aClI4TnY1QnR0RVFKTng0dnhtbkRsdi9qemVOanFLY2UxUFJtQWxzUmw3OVBmNzdOV1dHRUVmbVpUYTZ3RVF2cDAKN1dzQW5jN21SYWJCbWlQbldTZ2tSTGJ3bXhmcUhrLzFtTSthSlBSWnV3S0NBUUVBeUJrTnNha3R0cEk4VVA4cwpiSHczRWg4Y2dUQklGSjRlUXFVZUdub05vVWUwcVFpOU5OV3ByYnpRbktWSkVnWTFNQ0JKZmNsYW4zNVhaRVIyCk1ZRGtQTVNLZVgvejY4cm8wZEtKM2N4Y1Rwb1JzdFNCWStab1ZRcEtWMGJRRC9kU0QxMzhHd2dSMHR0U3dJZ1MKNlVQcmpOQUtGclhNSzY4dnMrQkNoTlgwWW95QmVkNTkwS05oOTJqbFd6ZjZnT21pN0Qxc1h5Vlp5c05KRnJCWApnbjYzYmxnM3BIY2VTQWNVdXZvS2t2MmU0bHVDVVJUR25RWlN4N05TVjBvUHQyMHlVbWlPb051VmhjVFA5TDRiClo1WS9hYXROQkpZNnhpRlh3UXRVa25yVEcvR1l5Z2RuUk5MMmJqM1FacFQ4dC9lWmswYVpvYmJLUDN1ZCtXemIKdFk5eE5RS0NBUUFDYWl4SU9wakNuS2JQaklxdURqWUlrNXJZYThxNjNwUWxjdFViMnFmb2hETHhuOFk0SzROTQorVGpvZVpwK0RRd3gxNFcrckN6RFdxZms5SnhVUVlUeHU5R01wdzlmYnQxZDZFazMvbHlhNlpDTk8yakhiZlNlClExZ2J0OEZ0U3g1Y0hZdUJOelRWZlJiWFhuRThUZVVPZldPTGRBR2JzUmcvSmxoZmxvUVdhNnNZWHZ2N1hhTjUKUXI4OWg5SFZRbmVGRkJiQlVnY0pJZ2JtMnhlN01tTnNqZXNSZDVHU0NsZjlmeGY5VGVRSHV1YVhnZnluRE5ZRApjTDIwZnpPTUpYWURIMmNEdmMwSWVJenZrcEdHUWhiaUV2VVJtR0NoYlh0NmRJN3FMUWxZTG1TZ1E3MmNLOWVLClhIelgrenRnVHlZeFZ1NFBVdmpaS1NyV2tSMVMrVXJsQW9JQkFRQ3NEWnoxemQyMlBPenErR0VQSUhXcDBqb2gKZ09NdUMzaEVUVk01cDhRTFpWcEZtdG1sS0FRQTN1UnBESnpjOGd0UFJqSjZwQ1E2bkM5ZEFzSVg0UndxMmZiSgo2RWU4VlNLbHJSQ2F4WTF4UWZ6WGpDVVlxbXBiYXJHZDJ2VktnRGY1ai9zUDM3Qy9SSzU3dGFlVTlvbU12ajVICkRZMGw0a2tETHk5VWd0aktzN2k1SzJXejFXcS9xUTNTTWpQU3M3SkUrQ1NQQ2dabk9UaHh1Z2xIVFFLMGQ3SE4Kc3pCUlpmNncvLy9SZS9RbVVKSWQ0QjN4bjNjYkV4OGZGTXlrSHdZeGYwdjNndnBnczloNFJuTVRCRHljT3V3NAplQnBLWTcxSTVFV0VmYjV1M2JHclMycXlWQXhVTjFBTXJIQ0VrZHA4ZkVZTFUwOUtUTmQ5Z2xvVU1KQXQKLS0tLS1FTkQgUlNBIFBSSVZBVEUgS0VZLS0tLS0K
+    # API server specific configuration options.
+    apiServer:
+        image: k8s.gcr.io/kube-apiserver-amd64:v1.19.4 # The container image used in the API server manifest.
+    # Controller manager server specific configuration options.
+    controllerManager:
+        image: k8s.gcr.io/kube-controller-manager-amd64:v1.19.4 # The container image used in the controller manager manifest.
+    # Kube-proxy server-specific configuration options
+    proxy:
+        image: k8s.gcr.io/kube-proxy-amd64:v1.19.4 # The container image used in the kube-proxy manifest.
+    # Scheduler server specific configuration options.
+    scheduler:
+        image: k8s.gcr.io/kube-scheduler-amd64:v1.19.4 # The container image used in the scheduler manifest.
+    # Etcd specific configuration options.
+    etcd:
+        # The `ca` is the root certificate authority of the PKI.
+        ca:
+            crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZDakNDQXZLZ0F3SUJBZ0lSQVBESkZHMnhyZmF6eXM2OGk3REFkbzB3RFFZSktvWklodmNOQVFFTkJRQXcKRHpFTk1Bc0dBMVVFQ2hNRVpYUmpaREFlRncweU1ERXlNVGN4TWpJd05UTmFGdzB6TURFeU1UVXhNakl3TlROYQpNQTh4RFRBTEJnTlZCQW9UQkdWMFkyUXdnZ0lpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElDRHdBd2dnSUtBb0lDCkFRQzdtaDYzS25BOXFwYmxDdmFkNG4wc2tkZVp6ZmFlckIvSmRhYjhianpUaGZ0bWVFQU1yZDJ6WkExUHE1eXoKQ1J6eTIxeEYwSjZWOG5ncFBGUEozamJJREdWcmw4eFZWREVUY2EvSHVHcVhBY1dPcjJhQlVoUmNMUlNnVVVKcwpaL3VFU2FWR282YWMveUlmbzFtL2pQVWhrMmVmdHRkR0wrOElUMzkzTkpXU3lXUVN0UmdlZEhlUVhvOW40TktvClVBczRNa0FmYXN2Z3MwZm1OZU92aXplZjJCYUJiMkpYM0JFbW9uSUlYRlY5dXpmYVdzV2RoTUdPQjB0K0tYZm0KYXRYQ2hiY3FnRWE1S3R0Zkg0a0IyRnBKc0NzblcwZGp0NFJDbEoxNURtM1VYOFBuT011dUZnVll0VjEra3lRcwo4UTFlOWhlcmVobDNvaEtTWG4zbW43a2JSZnhnS0RXeXVMR2N6TmZXREd1QnlKeGZRK3BpL1luUGVvUkNiQTVWCjE5U2NMTVR3eFJsRTlBd2VmbmdHV2J5aFZWTUttYmF1eVV3ZGp5RitlYkRhR1Vtb0tzWlNQaVArYnYyaFJpbngKd1kyUitQV1g2TStPL2hsUWNwYzRLeVJkTmlDTml0Z3Q5L0F1U3dHejFGRVV2THdLdThEN3VEZG1uWjJZNmFMSwpsK3NtMmZJdFdCekhLS3lEMGJZTjJIeGZEOXc1THFjWm1jZW1WSGZwUmo5MDhWRVBGQ2s2NHM4TFJMS3FXSWthCkpOUzRiMkxQYzlOM05ualcvSmo5di94R3NITHlYODBJcS9DL2swa2ozUGVKU016OWgzQ0xpK2ZabDdqNjNRMUMKMDRIQzY3ZVduWVRDVDgwY0IxOGZJS3BYNmRQV1FmRDNQRFlnV3FYRDM2MCswUUlEQVFBQm8yRXdYekFPQmdOVgpIUThCQWY4RUJBTUNBb1F3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01BOEdBMVVkCkV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQXhSTlBGK0VIdUpVZ29ZamtmT1lTMER1SW1FTUEwR0NTcUcKU0liM0RRRUJEUVVBQTRJQ0FRQnlxdW1hRlBJS1l5K1hnQld6K1crSkNzeW5oV1lnZkJUclFKVDg5b0p0dHFqcwpmSStOQ3EzdUtRSXdYd0o1UXorTXF3Vy9BMlVNd2ZrbHRGVnIrWWVSOTdMdGIwMkd2eDBreElGQWoybHphYVJwCmZ2S0RwbDFZY0ZLaks5ZTJkcEh2NGR6VS8zcHM1Y3RoWDhNYng5WklSSXRWcG0vWEtxa0pkVDVYb2IyeDVucjYKTU9RTXpHNmE5TFVoSFVjT1l0cFUwa205ZS9lRFNmcDRaOGJxTG44U3lnK05FMUJCaE1rSFlFU0t4TEhUMndYYQowV00wcTdmV1ZzamZ5eFlteE9DYkZGelUyd1J1bUxROVBkY2pKS29mR3NkN0ZIZGNta3RUejdkak4zSlpDWWhnCnhIWjlReXV3UStkQ2x1OUJsMmpnc3F5a1VTZGtOUys4SjB5ellGSjZ6dDRNZVIxVnJnRFNOQlpaRHdSUEpnS1YKZWdxNDZSSnF1Vytsc1lVbU9qWUdQWVB3S0xHUDJ1WHVsQlQxOFlqYkxlTWVnUnluVDF5SC8wbUlCaUMxT2JGTgp1RkpENEp4NjFmUlo0T0I1RC9GbURCRnAvQlA3MGZveUVnZFF2dHMveFRoU3RQNHprVXRQUzFsck9zQ2NROVJ1Cm9BajkwcEY2OU9QcCttOTBBRzdzK2tobCt2OEpqWDh2T2hZdEZJaXFZRjBybWxjR2N4N0M3VjNmaXlqWk9rREoKTXYwOVFZZCtianZZSk0xQjRDVEkvbEhXbTFyRWxPR1JJZCs5RmxSMUdzUmc2NmhtbndIaml3UHpTUnFmUEJDWQpidnBieS93UTIyc1JNKy9lTUlCdEJOQlhkRGZPVFdpbEpmVHJzQ2lBNUQ4aHRzU1NwRnF3d3M5VTZJOUdWdz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+            key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS0FJQkFBS0NBZ0VBdTVvZXR5cHdQYXFXNVFyMm5lSjlMSkhYbWMzMm5xd2Z5WFdtL0c0ODA0WDdabmhBCkRLM2RzMlFOVDZ1Y3N3a2M4dHRjUmRDZWxmSjRLVHhUeWQ0MnlBeGxhNWZNVlZReEUzR3Z4N2hxbHdIRmpxOW0KZ1ZJVVhDMFVvRkZDYkdmN2hFbWxScU9tblA4aUg2Tlp2NHoxSVpObm43YlhSaS92Q0U5L2R6U1Zrc2xrRXJVWQpIblIza0Y2UForRFNxRkFMT0RKQUgyckw0TE5INWpYanI0czNuOWdXZ1c5aVY5d1JKcUp5Q0Z4VmZiczMybHJGCm5ZVEJqZ2RMZmlsMzVtclZ3b1czS29CR3VTcmJYeCtKQWRoYVNiQXJKMXRIWTdlRVFwU2RlUTV0MUYvRDV6akwKcmhZRldMVmRmcE1rTFBFTlh2WVhxM29aZDZJU2tsNTk1cCs1RzBYOFlDZzFzcml4bk16WDFneHJnY2ljWDBQcQpZdjJKejNxRVFtd09WZGZVbkN6RThNVVpSUFFNSG41NEJsbThvVlZUQ3BtMnJzbE1IWThoZm5tdzJobEpxQ3JHClVqNGovbTc5b1VZcDhjR05rZmoxbCtqUGp2NFpVSEtYT0Nza1hUWWdqWXJZTGZmd0xrc0JzOVJSRkx5OENydkEKKzdnM1pwMmRtT21peXBmckp0bnlMVmdjeHlpc2c5RzJEZGg4WHcvY09TNm5HWm5IcGxSMzZVWS9kUEZSRHhRcApPdUxQQzBTeXFsaUpHaVRVdUc5aXozUFRkelo0MXZ5WS9iLzhSckJ5OGwvTkNLdnd2NU5KSTl6M2lVak0vWWR3Cmk0dm4yWmU0K3QwTlF0T0J3dXUzbHAyRXdrL05IQWRmSHlDcVYrblQxa0h3OXp3MklGcWx3OSt0UHRFQ0F3RUEKQVFLQ0FnQWJCYmdtNmhZQXkvR3dURVA1dWdZTnhYUW8wMklTdVBoYkxIZEJKUi9kMkE2K1U5UGwvNlZQa2JuWgpILzhTU3QzQW5aaE05aC9odVd0VmhUc01lTldyT3gzZ3daek5MYk5qK1p3NFNIZ1NDRTlNbmpkRnFXMEZXZmorCm5yWFNwNmV6Qm1pb0pDcDdzc1JYaWxBREoycW55M1BCcmJTVWg1TUd2Mnk4M3ZZc2pwVzduQm85U01sd0lpN0YKNTd4d1FoZGJvT0ZicFNaNDExb2o3dDg5Q2ZDWk5hY0lQZU1NaE1aenFqS0N3Y29Pc2tqNVN0bnNOcE1xd2lJOQpxZnQ3VlNnMVBNMkZjYlMrTjA0aUJZaldtek5tS2RvTmNUaDNSSmZvZnordmtFU0Jzc21sSktreUNqbjY3U1RxCmRvZGZjZGxiTkZkMGU4SHZXWWtUVEVrV1R5dDZZeFRBOExCZ1dnL2tPNUFncGR3SHluMTA5NkM5Q0NxdDBiNWoKeWlVVXBDMHZLZm0vejFTYWdMRkxhZXFDSTdiMjluQ3B5dzR5SWZpWlBqQjY2cFcydk9LZUVuaW1vVXRGWXlXQgo5ZXpGUzZVcGVYdWRuTUFQL1N4K3lYR2RuR09DZFBHQys2ZUR5VkxFM0Q0bjFybHZDZENXTkh3Rk9OSlRKbUVxCnhvbTg0eXFMUlRFMEhhTGdWNW9jN3RSQjdrQnhqQVhZTkpUQ2ErWWtQYW52M3p5andETFBsQi9BZHNmN3hNb1IKS09iMHNWdTJPK2xIMEZkQVo5YjhKQzBIdThaOHNkY0JxNS9pbFVVTlZ0dE45VGdycDZLMk1oM1Q5eEFvWXRidgp3Z3dIVnY0cHM2dVRDRzNEaTlQeEdHbm1WRTQwVVdFLzMwMWczY2dRVlYyK3A5czlnUUtDQVFFQTFyY0F5WWFiCk9oYUlKTVdPd2xuYXE2ZWMyeG9aK09MaXBVcUhSOGNZbWk3dEZXOWZKQXNodGh0d1ltQk9rK3F0dWUrWTN6THoKN0lVTER4WUI4ZDdiU1Jka09pK2swRVZnUjhqdnMyKzJFOFVuY2swLys3UGduTk9hdHhCMVZadXB5aTViLzJtVwp5TXIvVGZPQmdwd1d4UXJMT1h1VnVLcm9xS0ZzSVc3OWg1WnlhTC9sWW8wNElHaEVJNFkwajJKZlRIRlljTWJKCldRVGRkZVVvK1lhemVQNUQ5RjZkUnI0SFV1NjFaOXpseC83bjA0VVdlV3BnWFg0ZzlwVC9kU2VIdGx5ZG1xNnMKMjJRZ2cyM1orbXRNWWFyZG1CVkVhckdzcDdEaEdPc1RuWnN3aHRQa2I2YzlkUnVnekw4aEdzSzZiZytKU3V4SwpuZUV1Y2VWazVxTlR1d0tDQVFFQTM2eUlBanBZUzlWRThVZ3ZRemQzTlJ5eFdYangvengxTElxNFRvOU1uREFCCnhZVUlSV0lNR2dwaXZjYXZrNnpIMm9maXFJSVNFa285UmFPSnJtdVBPeDJUTkljK2cvSmxXdnBwcTM1OEdmbE8KeXhOUzdTdlM1d0lobkxWdVJ5OVpZQitKcys4S0pQemhXUFhKbmduaFBmNTdQOU1GRzR3cTJLb2pCdjdGeFgrMApBL01kQ09XR2dRcHEwK2RkL1luelJyQXYzTVBya2huK2tkS1ozaXdYZDdZcGhxUzkrWTgxN2lMUnRyNStWWEt1Ckg4akxYL2ZTVVBmLzZ0MTh3SGM2YVgrc1dKb1JlbTR0ZmRVVlhubjlqeGlqUm5ZRHZpdkc0K2FldXJPNFBZL0YKK25EM0QzaUhvYVpJajg0RkE1ekFOT1B3OXFpdTYxTFRteUxCdis0QTR3S0NBUUJMTSttWXJBYXVQN29MZHc1YgpUL0ZnOGVIa2M2M3BHRDVkdWs3TGV4WkkybXE3ZVRpUGZUNmZjOWpXKy9oSm9vYWFleXJGOGlpeERLQWs5b1pUCjJzUmZRMHdkZlJaeXcvbkc2ci9aenlTc28vNys3OE9iT3hOT21tYXorNVc5R0RwTjBCTDAwRnk1a3kvOGMyOUcKK2JpWDV3SHE3amd3Wjl2NVJDQ0ZUVVNMT3N4emw5S1Z3L1NHbFQ1WVd1Y0oyV0NiZTQrSVlIZWhNQzBJMyt5TQpDUHZQUXU4MkpmVmNFNjZwQTJhU0xESm03QWJ5ZE1pOFdkL0tueVNZZVBOSWEwSURRMGtJSm1ud3BZOGx1VklCCmZaZFJGZkZyRlBmVGpzdDBLR1dPdnJjdUdtN1NxbUIySXROSnN4V000TnlOYk9xekpjbm1iZ0JzYjdRK3ZDT3QKREVPRkFvSUJBRXFrR3FjVHJVOXhGaGFtamc4U1BWZWVBWmpvQVdtNVZTak9DZjg5VnNWd1I4Y1FROWhUaGRKUwowT3lmbHd2aXhyYW9UZjBKbXRvN3FBTExOakRjZCttMFR1RmltSHdUc2JzUWdaN1hFTGJpT1djUFJjY2JycitrCk9HOUJKRkhnL1NSVW9mRkh2Y3ptRHBWUFFEN2E4UzFzOU5neHBTeXlNOElsMUphTEFwaUxxeGorVWh3YjdDeTMKdXpxSHBSZnNweUJadno4ZXFrZ1JJS0NzOU9mdE1zK2lIRzF3SUcxZFd4UGl6clQ3RU5HVytZQmwwMmh0SE9RawpQbVMwRU9OeFppNjZpbHJ1M3hKS0hpZzFxWEhqcDdmTzh2MmFlRmxINXBFNjdwRkRWQ0pIRGp3cTRtZHBRMm13ClFkcXJWNFVERkNrU1ArRXdIVjh1UHFzd2lCTnlheDBDZ2dFQkFNRTJRM0lTdGRaWVpEVzBYRWg4OStOZmRWNXMKdnUxWXgvT1ozVWJhVUlMYWo1YVZsdkhVUHZ4ZVZuc1c3dHRqK21tTHlRS2xTTlpRQUlOcm1Eb0dsZ2VvTjNOSAowbTdsbUVoOVhjQk9ZNzRwTjBSYmplL1I0QUduRGlKZFEvL25OcHRZQnJqZHJjWlg5MlJhVFNUWnFaWm16a1N6Cjd5bzdRTkJQSW02YzhQb2hodjlDVWJ3OG1ld1B3OXZnT3MxNGlJclFzUW1tU2UwSCtGcjhPNzRtblRENVVENHEKL1dSMHBtcWJTb3pSMC9iS24wVkZsMmNuaXNXZnZaUG5rZ2RtWHI3dVFEVktENHUydFllWXNsWENDeFNjVC9DSwpiV3FhZmU5VnpjNTBSRHVuWFVMUnJobDB2RnM5NGpwWDErS3BpRzlyL2NkM3lqdElkNUExa01ZNk1Tbz0KLS0tLS1FTkQgUlNBIFBSSVZBVEUgS0VZLS0tLS0K
+    
+    # # Pod Checkpointer specific configuration options.
+    # podCheckpointer:
+    #     image: '...' # The `image` field is an override to the default pod-checkpointer image.
+
+    # # Core DNS specific configuration options.
+    # coreDNS:
+    #     image: k8s.gcr.io/coredns:1.7.0 # The `image` field is an override to the default coredns image.
+
+    # # A list of urls that point to additional manifests.
+    # extraManifests:
+    #     - https://www.example.com/manifest1.yaml
+    #     - https://www.example.com/manifest2.yaml
+
+    # # A map of key value pairs that will be added while fetching the ExtraManifests.
+    # extraManifestHeaders:
+    #     Token: "1234567"
+    #     X-ExtraInfo: info
+
+    # # Settings for admin kubeconfig generation.
+    # adminKubeconfig:
+    #     certLifetime: 1h0m0s # Admin kubeconfig certificate lifetime (default is 1 year).
