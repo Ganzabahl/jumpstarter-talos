@@ -43,16 +43,12 @@ FROM alpine AS tftp
 RUN apk add --no-cache wget
 RUN apk add --no-cache syslinux
 WORKDIR /files/
-RUN wget https://stable.release.flatcar-linux.net/amd64-usr/current/flatcar_production_pxe.vmlinuz
-RUN wget https://stable.release.flatcar-linux.net/amd64-usr/current/flatcar_production_pxe_image.cpio.gz
 RUN wget https://github.com/talos-systems/talos/releases/download/v0.7.1/initramfs-amd64.xz
 RUN wget https://github.com/talos-systems/talos/releases/download/v0.7.1/vmlinuz-amd64
 
 FROM alpine
 RUN apk add --no-cache docker-compose
 WORKDIR /files/
-COPY --from=tftp /files/flatcar_production_pxe.vmlinuz .
-COPY --from=tftp /files/flatcar_production_pxe_image.cpio.gz .
 COPY --from=tftp /files/initramfs-amd64.xz .
 COPY --from=tftp /files/vmlinuz-amd64 .
 COPY init.yaml .

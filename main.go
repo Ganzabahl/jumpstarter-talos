@@ -69,7 +69,8 @@ func defaultFile(ip string) *bytes.Buffer {
 
 	response += "LABEL flatcar-http\r\n"
 	response += "LINUX http://" + ip + "/files/vmlinuz-amd64\r\n"
-	response += "APPEND initrd=http://" + ip + "/files/initramfs-amd64.xz page_poison=1 slab_nomerge slub_debug=P pti=on console=tty0 console=ttyS0 printk.devkmsg=on talos.platform=metal talos.config=http://" + ip + "/files/init.yaml\r\n"
+	//response += "APPEND initrd=http://" + ip + "/files/initramfs-amd64.xz page_poison=1 slab_nomerge slub_debug=P pti=on console=tty0 console=ttyS0 printk.devkmsg=on talos.platform=metal talos.config=http://" + ip + "/files/init.yaml\r\n"
+	response += "APPEND initrd=http://" + ip + "/files/initramfs-amd64.xz page_poison=1 slab_nomerge slub_debug=P pti=on panic=0 consoleblank=0 earlyprintk=ttyS0 console=tty0 console=ttyS0 talos.platform=metal\r\n"
 	buf := bytes.NewBufferString(response)
 	return buf
 }
@@ -80,8 +81,8 @@ func readHandler(filename string, r io.ReaderFrom) error {
 	if strings.Contains(filename, "default") {
 		ip := r.(tftp.RequestPacketInfo).LocalIP().String()
 		ipRemote := r.(tftp.OutgoingTransfer).RemoteAddr()
-		fmt.Printf("TFTP-Server: Generated default for ip:%s \n", ip)
 		n, err := r.ReadFrom(defaultFile(ip))
+		fmt.Printf("TFTP-Server: Generated default for ip:%s client:%s \n", ip, ipRemote.IP.String())
 		checkDockerExist(ipRemote.IP.String())
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
