@@ -52,7 +52,6 @@ WORKDIR /files/
 COPY --from=tftp /files/initramfs-amd64.xz .
 COPY --from=tftp /files/vmlinuz-amd64 .
 COPY init.yaml .
-COPY pxe-config.ign /
 COPY bootstrap/ .
 COPY jumpstarter.png .
 RUN apk add --no-cache vim

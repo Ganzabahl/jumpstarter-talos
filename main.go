@@ -9,7 +9,6 @@ import (
 	"github.com/go-git/go-git/plumbing/transport"
 	"github.com/go-git/go-git/plumbing/transport/ssh"
 	"github.com/pin/tftp"
-	"github.com/tidwall/sjson"
 	"io"
 	"io/ioutil"
 	"log"
@@ -238,33 +237,6 @@ func dockercompose() {
 	}
 
 }
-func IgnitionFile() string {
-	pubKeyFile, err := os.Open("/root/.ssh/id_rsa.pub")
-	if err != nil {
-		panic(err)
-	}
-	pubKey, _ := ioutil.ReadAll(pubKeyFile)
-	jsonFile, err := os.Open("/pxe-config.ign")
-	if err != nil {
-		panic(err)
-	}
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	value, _ := sjson.Set(string(byteValue), "passwd.users.0.sshAuthorizedKeys.0", string(pubKey))
-	defer jsonFile.Close()
-	return value
-}
-
-var ignitionFile = IgnitionFile()
-
-func ignitionWeb(w http.ResponseWriter, req *http.Request) {
-	value, _ := sjson.Set(ignitionFile, "storage.files.0.contents.source", "http://"+req.Host+"/files/stat")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(value))
-	log.Println("Server PXE booted:", req.Host)
-
-}
 
 func BasicAuth(handler http.HandlerFunc) http.HandlerFunc {
 	realm := "Please enter your username and password for this site"
@@ -311,7 +283,6 @@ func main() {
 	fileServer := http.FileServer(http.Dir("/files"))
 	mux.HandleFunc("/ssh", BasicAuth(sshCommand))
 	mux.HandleFunc("/sshout", BasicAuth(sshCommandOutput))
-	mux.HandleFunc("/ignition", ignitionWeb)
 	mux.HandleFunc("/containers", BasicAuth(containers))
 	mux.HandleFunc("/status", BasicAuth(status))
 	mux.HandleFunc("/", BasicAuth(servers))
