@@ -43,8 +43,8 @@ FROM alpine AS tftp
 RUN apk add --no-cache wget
 RUN apk add --no-cache syslinux
 WORKDIR /files/
-RUN wget https://github.com/talos-systems/talos/releases/download/v0.7.1/initramfs-amd64.xz
-RUN wget https://github.com/talos-systems/talos/releases/download/v0.7.1/vmlinuz-amd64
+RUN wget https://github.com/talos-systems/talos/releases/download/v0.8.0/initramfs-amd64.xz
+RUN wget https://github.com/talos-systems/talos/releases/download/v0.8.0/vmlinuz-amd64
 
 FROM alpine
 RUN apk add --no-cache docker-compose
