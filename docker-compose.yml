@@ -8,6 +8,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker:/var/lib/docker
     environment:
-      - GIT_CLUSTER="git@github.com:trumandk/cluster.git"
+      - GIT_CLUSTER="git@github.com:Ganzabahl/cluster.git"
       - JUMPSTARTER_USERNAME=admin
       - JUMPSTARTER_PASSWORD=123
